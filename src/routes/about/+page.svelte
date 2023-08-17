@@ -1,0 +1,1 @@
+I am a recent graduate of Harvey Mudd College, a small liberal-arts college in Southern California where I majored in Computer Science and Mathematics. 

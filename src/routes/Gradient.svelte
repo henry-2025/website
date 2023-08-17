@@ -1,7 +1,5 @@
 <script>
     import { onMount } from "svelte";
-    import "fs";
-
     /*
      *   Stripe WebGl Gradient Animation by Stripe.com
      *   ScrollObserver functionality to disable animation when not scrolled into view has been disabled and
@@ -1346,8 +1344,8 @@ void main() {
                 "--gradient-color-1",
                 "--gradient-color-2",
                 "--gradient-color-3",
-                "--gradient-color-4",
-                "--gradient-color-5",
+                // "--gradient-color-4",
+                // "--gradient-color-5",
             ]
                 .map((cssPropertyName) => {
                     let hex = this.computedCanvasStyle
@@ -1405,101 +1403,21 @@ void main() {
     let subtitle = "Subtitle";
 </script>
 
-<canvas id="gradient-canvas" />
-
-<section class="section_top">
-    <div class="section-container">
-        <div class="section-layout-container container-medium with-padding">
-            <div class="section-layout">
-                <div class="gradient-area">
-                    <div class="gradient-title-area">
-                        <h1 class="text text-above section-title-1">{title}</h1>
-                        <div class="section_background-wrap">
-                            <canvas
-                                id="gradient-canvas"
-                                data-js-darken-top
-                                data-transition-in
-                            />
-                        </div>
-                        <div
-                            class="text text-under text-under-blended section-title-1"
-                        >
-                            {title}
-                        </div>
-                        <div
-                            class="text text-under text-under-overlay section-title-1"
-                        >
-                            {title}
-                        </div>
-                    </div>
-                </div>
-                <h2 class="section-title-2 subtitle">{subtitle}</h2>
-            </div>
-        </div>
-    </div>
+<section class="gradient-container">
+    <canvas id="gradient-canvas" data-js-darken-top data-transition-in />
 </section>
 
 <style lang="scss">
-    $standard_space: 100px;
-    :root {
-        // --section-gap: calc(#{$standard_space});
-        --gradient-padding: 120px;
-        --gradient-title-margin: 100px;
-        --section-skew-Y: -12deg;
-        --section-angle-sin: 0.212;
-        --transform-origin-x: calc(var(--section-gap) * 0.8);
-        // @include mq($container_medium_width) {
-        //     --section-gap: calc(
-        //         (100vw - #{$container_medium_width} + #{$standard_space} * 2) /
-        //             2
-        //     );
-        // }
-    }
-    .section-title-1 {
-        font-size: 64px;
-        font-weight: 700;
-        text-transform: uppercase;
-        width: 500px;
-        max-width: 80vw;
-        font-size: 100px;
-        width: 600px;
-    }
-
     #gradient-canvas {
-        --gradient-color-1: #fcffa4;
-        --gradient-color-2: #f98e09;
-        --gradient-color-3: #bc3754;
-        --gradient-color-4: #57106e;
+        --gradient-color-1: #ffffff;
+        --gradient-color-2: #fc3838;
+        --gradient-color-3: #fa82ee;
     }
-
-    .text {
-        line-height: 1;
-        margin: var(--gradient-title-margin) 0 0 0;
-        text-transform: none;
-        letter-spacing: 2px;
-        min-height: 200px;
-        display: flex;
-        align-items: flex-end;
-    }
-
-    .text-above {
-        color: var(--font-color);
-        position: relative;
-    }
-
-    .text-under {
+    $standard_space: 100px;
+    .gradient-container {
         position: absolute;
-        bottom: 0;
         left: 0;
-        z-index: 2;
-    }
-    .text-under-blended {
-        color: #3a3a3a;
-        mix-blend-mode: color-burn;
-    }
-
-    .text-under-overlay {
-        opacity: 0.2;
-        color: #3a3a3a;
+        top: 0;
+        z-index: -1;
     }
 </style>
