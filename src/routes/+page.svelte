@@ -1,12 +1,12 @@
 <script>
-	let title = "Hi, I'm Henry Pick";
+	let title = "Hi, I'm Henry";
 	let subtitle = "AI enjoyer, running enthusiast, and aspiring machine learning engineer";
 	let mission = ""
 </script>
 <div class="title-container">
 	<div class="text text-under text-center text-under-blended section-title-1">{title}</div>
 	<div class="text text-under text-center text-under-overlay section-title-1">{title}</div>
-	<div class="subtitle font-mono font-bold text-lg">
+	<div class="subtitle text-subtitle font-bold text-lg">
 			{subtitle}
 	</div>
 </div>
@@ -21,7 +21,6 @@
 	.subtitle{
 		position: relative;
 		top: 350px;
-		font-family: 'Inconsolata';
 		font-weight: 500;
 		font-size: large;
 	}
@@ -41,6 +40,7 @@
 		//             2
 		//     );
 		// }
+		font-family: monospace;
 	}
 	.section-title-1 {
 		font-size: 64px;
@@ -71,8 +71,8 @@
 		z-index: 2;
 	}
 	.text-under-blended {
-		color: #f32424;
-		mix-blend-mode:difference;
+		color: #474747;
+		mix-blend-mode:color-burn;
 	}
 
 	.text-subtitle {
@@ -80,8 +80,7 @@
 	}
 
 	.text-under-overlay {
-		opacity: 0.5;
-		color: #a05c9e;
-		mix-blend-mode: color-dodge;
+		opacity: 0.3;
+		color: #0f0f0f;
 	}
 </style>
