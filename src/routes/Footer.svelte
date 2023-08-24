@@ -1,6 +1,6 @@
-<footer>
-    <div class="footer-container flex lg:justify-end lg:gap-x-10 mr-10">
-        <p>Copyright all rights reserved Henry Pick Consulting LLC</p>
+<footer class="flex lg:sticky lg:left-0 lg:bottom-0 m-5 items-center justify-between lg:pr-8">
+    <p>Copyright all rights reserved JHP Consulting LLC</p>
+    <div class="lg:flex lg:flex-1 lg:gap-x-10 lg:justify-end">
         <div class="github">
             <a href="https://www.github.com/henry-2025">
                 <svg
@@ -32,3 +32,11 @@
         </div>
     </div>
 </footer>
+
+<style>
+    p {
+        font-size: medium;
+        text-align: left;
+        text-indent: 0;
+    }
+</style>

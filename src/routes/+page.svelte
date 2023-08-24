@@ -1,86 +1,54 @@
 <script>
 	let title = "Hi, I'm Henry";
-	let subtitle = "AI enjoyer, running enthusiast, and aspiring machine learning engineer";
-	let mission = ""
+	let subtitle =
+		"AI enjoyer, running enthusiast, and machine learning engineer";
 </script>
-<div class="title-container">
-	<div class="text text-under text-center text-under-blended section-title-1">{title}</div>
-	<div class="text text-under text-center text-under-overlay section-title-1">{title}</div>
-	<div class="subtitle text-subtitle font-bold text-lg">
+
+<div class="h-screen">
+	<div class="relative left-1/4 top-10">
+		<div class="relative justify-center">
+			<div
+			class="text text-overlay"
+			>
+			{title}
+			</div>
+			<div
+				class="text text-beneath"
+			>
+				{title}
+			</div>
+		</div>
+		<div
+			class="relative text-xl font-medium font-bold text-lg"
+		>
 			{subtitle}
+		</div>
 	</div>
 </div>
-<style lang="scss">
-	.title-container {
-		position: relative;
-		top: var(--position-text-top);
-		left: var(--position-text-left);
-		width: fit-content;
-	}
 
-	.subtitle{
-		position: relative;
-		top: 350px;
-		font-weight: 500;
-		font-size: large;
-	}
-
-	:root {
-		// --section-gap: calc(#{$standard_space});
-		--position-text-top: 0px;
-		--position-text-left: 30px;	
-		--gradient-padding: 120px;
-		--gradient-title-margin: 100px;
-		--section-skew-Y: -12deg;
-		--section-angle-sin: 0.212;
-		--transform-origin-x: calc(var(--section-gap) * 0.8);
-		// @include mq($container_medium_width) {
-		//     --section-gap: calc(
-		//         (100vw - #{$container_medium_width} + #{$standard_space} * 2) /
-		//             2
-		//     );
-		// }
-		font-family: monospace;
-	}
-	.section-title-1 {
-		font-size: 64px;
-		font-weight: 700;
-		text-transform: uppercase;
-		width: 500px;
-		max-width: 80vw;
-		font-size: 100px;
-		width: 600px;
-		font-family: monospace;
-		font-weight: 200;
-	}
-
+<style>
 	.text {
-		line-height: 1;
-		margin: var(--gradient-title-margin) 0 0 0;
-		text-transform: none;
-		letter-spacing: 2px;
-		min-height: 200px;
-		display: flex;
-		align-items: flex-end;
-		font-family: 'Inconsolata';
-		font-weight: 700;
-	}
-
-	.text-under {
-		position: absolute;
+		text-align: center;
+		line-height: 1.5;
+		letter-spacing: 0.1em;
+		font-weight: bold;
+		text-transform: uppercase;
+		width: 25%;
+		font-size: 8rem;
 		z-index: 2;
 	}
-	.text-under-blended {
-		color: #474747;
-		mix-blend-mode:color-burn;
-	}
-
-	.text-subtitle {
+	.text-overlay{
 		position: relative;
+		mix-blend-mode: color-burn;
+		color: #544d4d;
 	}
 
-	.text-under-overlay {
-		opacity: 0.3;
+	.text-beneath{
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: 0.4;
 		color: #0f0f0f;
+		visibility:hidden;
 	}
 </style>

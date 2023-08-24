@@ -1,11 +1,5 @@
 <script>
     import { onMount } from "svelte";
-    /*
-     *   Stripe WebGl Gradient Animation by Stripe.com
-     *   ScrollObserver functionality to disable animation when not scrolled into view has been disabled and
-     *   commented out for now.
-     */
-
     //Converting colors to proper format
     function normalizeColor(hexCode) {
         return [
@@ -1410,8 +1404,8 @@ void main() {
 <style lang="scss">
     #gradient-canvas {
         --gradient-color-1: #ffffff;
-        --gradient-color-2: #fc3838;
-        --gradient-color-3: #fa82ee;
+        --gradient-color-2: #176570;
+        --gradient-color-3: #d7fc42;
     }
     $standard_space: 100px;
     .gradient-container {
@@ -1419,5 +1413,7 @@ void main() {
         left: 0;
         top: 0;
         z-index: -1;
+        -webkit-mask-image: -webkit-gradient(linear, left 30%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+
     }
 </style>
