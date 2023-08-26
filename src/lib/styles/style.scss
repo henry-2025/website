@@ -13,7 +13,7 @@
     //             2
     //     );
     // }
-    font-family: monospace;
+    font-family: 'Inconsolata';
 }
 
 
@@ -44,8 +44,12 @@ a {
 
 .article-container {
     text-indent: 10pt;
-    margin-left: 5rem;
-    margin-right: 5rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    @media (min-width: 1024px) {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
 }
 
 ol {

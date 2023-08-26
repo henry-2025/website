@@ -10,7 +10,9 @@
 <div class="app">
 	<Header />
 	{#if $page.url.pathname == "/"}
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-24, sm:py-20 mb-[10vh]">
 		<slot />
+    </div>
 	{:else}
 		<div
 			class="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32 bg-gradient-to-tr from-white min-h-screen"

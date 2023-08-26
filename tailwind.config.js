@@ -3,7 +3,7 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     fontFamily: {
-      mono: ['Inconsolata'],
+      'mono': ['Inconsolata'],
     },
     extend: {},
   },

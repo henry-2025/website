@@ -4,16 +4,15 @@
 		"AI enjoyer, running enthusiast, and machine learning engineer";
 </script>
 
-<div class="h-screen">
-	<div class="relative left-1/4 top-10">
+	<div class="relative ml-[25vw]">
 		<div class="relative justify-center">
 			<div
-			class="text text-overlay"
+			class="text text-overlay text-7xl lg:text-9xl"
 			>
 			{title}
 			</div>
 			<div
-				class="text text-beneath"
+				class="text text-beneath text-7xl lg:text-9xl"
 			>
 				{title}
 			</div>
@@ -24,7 +23,6 @@
 			{subtitle}
 		</div>
 	</div>
-</div>
 
 <style>
 	.text {
@@ -34,7 +32,6 @@
 		font-weight: bold;
 		text-transform: uppercase;
 		width: 25%;
-		font-size: 8rem;
 		z-index: 2;
 	}
 	.text-overlay{
@@ -44,11 +41,10 @@
 	}
 
 	.text-beneath{
-		position: absolute;
-		top: 0;
-		left: 0;
-		opacity: 0.4;
+        position: absolute;
+        top:0;
+        left:0;
+		opacity: 0.2;
 		color: #0f0f0f;
-		visibility:hidden;
 	}
 </style>
