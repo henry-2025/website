@@ -16,6 +16,12 @@
     font-family: 'Inconsolata';
 }
 
+h1 {
+    font-weight: bold;
+    font-size: 30pt;
+    margin-bottom: 1rem;
+    text-align: center;
+}
 
 h2,
 h3 {
@@ -42,7 +48,7 @@ a {
     color: #ff5564;
 }
 
-.article-container {
+article {
     text-indent: 10pt;
     margin-left: 2rem;
     margin-right: 2rem;
@@ -55,4 +61,11 @@ a {
 ol {
     list-style: decimal;
     text-indent:0;
+    padding-left: 30pt;
+}
+
+ul {
+    list-style:disc;
+    text-indent:0;
+    padding-left: 30pt;
 }

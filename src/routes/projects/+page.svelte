@@ -4,7 +4,7 @@
 >
     <article class="flex max-w-xl flex-col items-start justify-between">
         <div class="flex items-center gap-x-4 text-xs">
-            <time datetime="2023-08-23" class="text-gray-500">Aug 23, 2023</time
+            <time datetime="2023-27-23" class="text-gray-500">Aug 27, 2023</time
             >
             <div
                 class="relative z-10 rounded-full bg-gray-300/50 px-3 py-1.5 font-medium text-gray-600  "
@@ -16,7 +16,7 @@
             <h3
                 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600"
             >
-                <a href="./projects/asl-fingerspell">
+                <a href="./projects/pages/asl-fingerspell">
                     <span class="absolute inset-0" />
                     ASL Fingerspell Kaggle Submission
                 </a>
