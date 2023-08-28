@@ -3,6 +3,11 @@ title: "Google ASL Fingerspell Kaggle Challenge: Pose estimates to text seq2seq 
 date: "2023-08-27"
 ---
 
+<script>
+  import dataset from '$lib/assets/asl-fingerspell/dataset.png';
+  import sequence from '$lib/assets/asl-fingerspell/example_feature_sequence.gif';
+</script>
+
 This was my submission to Google's ASL Fingerspell Challenge. It's not much and I still clearly have a long way to go before I can call myself an expert at this stuff. That said, I am proud of my work here and I don't think there have been many other times where I have learned this much in such a small amount of time. Because it is my first real deep learning project, this summary will be more in-depth than just a showcase. I try to recount all of my main challenges and learnings that came out of the engineering/research process. I also shouldn't go any further without thanking the couple of folks who provided their experienced advice when I needed their guidance. Know that your advice went a long way, helping me push through some of the moments of doubt and uncertainty in this.
 
 Without further ado, the writeup has the following structure
@@ -28,7 +33,7 @@ Tabular data has a different story *because* it is such a flexible format. There
  
 When you take a look at the structure of this competition, it has a relational structure. You have a manifest file and a set of parquet files. The manifest contains a list of all the training examples, their labels and some metadata pointing to their location in the parquet files. Each parquet contains some number of vector time series indexed by the sequence id given in the manifest. Have a look:
 
-![Dataset Schema](/src/lib/assets/asl-fingerspell/dataset.png)
+![Dataset Schema]({dataset})
 
 There are a couple of issues with using this storage format directly with your training pipeline. Size is one. The parquet files, although they are a binary format, are chunked into files that are very large, take a long time to load and leave a large memory footprint during training. Furthermore, the number of raw features, 1,629 is intuitively high for a model that is just translating fingerspell sequences. Feature selection thus becomes an important consideration at this point.
 
@@ -39,6 +44,7 @@ At the start of this project, I was inclined to cram the maximum number of prepr
 Okay, enough talk. Let's get into the nitty-gritty of how to store this data in the filesystem. You want to choose a scheme that aligns closely with how you plan to load the data during training and validation. If you are using a k-folds validation scheme, you'll probably want to partition the actual files into folds so that samples can be accessed in an independent, shuffled manner within their fold. If you look at [asl_data_preprocessing.ipynb](https://github.com/henry-2025/asl-fingerspell/blob/main/asl_data_preprocessing.ipynb), you'll see that the file names are prefixed with a `fold{n}`, which is how I accomplished this. We then choose a binary format for storing the files. If you are training your model in TensorFlow, I strongly recommend that you use the library's TFRecord framework. Most will underestimate the life-changing impacts of using an integrated binary data storage like this baby. But, if you are willing to take my words of wisdom as a complete newbie to deep learning, this is absolutely the case. When your dataset is stored as TFRecords, you can do parallel reads in your dataloader, you can point your file addresses to google storage objects (stay tuned for the [cloud infrastructure](#cloud-resources") section), you can shuffle your otherwise iterable dataset using a variable-length shuffle buffer. It's literally all done for you in the TF library. For this reason alone, I went against the advice of all my more experienced friends and tried rewriting this entire project for TensorFlow. Honestly, it was not a mistake. 
 
 You can see that in the following, these are the only utilities you need to get your dataset written in the preprocessing stage and loaded in the training stage. Very simple, no boilerplate.
+
 ```python
 def encode_example(sequence: np.ndarray, frame: np.ndarray):
     feature = dict()
@@ -137,7 +143,7 @@ work went into learning the tools and techniques required data loading pipelines
 Since this was my first real deep learning project beyond the "Hello World" neural
 nets that you build in the Pytorch intro page, Most of my for large datasets. It
 is also my first real deep learning project, which I think it My submission for
-the Google ASL Kaggle challenge. ![training example](/src/lib/assets/asl-fingerspell/example_feature_sequence.gif)
+the Google ASL Kaggle challenge. ![training example]({sequence})
 
 ```python
 import torch

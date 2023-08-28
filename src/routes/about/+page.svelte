@@ -7,7 +7,7 @@
   <p>
     My name is (Jonathan) Henry Pick. I am a recent graduate of Harvey Mudd
     College, a small liberal-arts school in Southern California where I majored
-    in computer science and math. Over my Summers as an undergrad, I was in a
+    in computer science and math. Over my summers as an undergrad, I was in a
     physics lab, I did some work at a tech company as a backend engineer, and I
     had another couple of internships at a medical instruments manufacturer.
     Right now, I am directing my career towards becoming an ML engineer and
