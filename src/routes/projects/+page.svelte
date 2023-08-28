@@ -7,7 +7,7 @@
             <time datetime="2023-27-23" class="text-gray-500">Aug 27, 2023</time
             >
             <div
-                class="relative z-10 rounded-full bg-gray-300/50 px-3 py-1.5 font-medium text-gray-600  "
+                class="relative z-10 rounded-full bg-gray-300/50 px-3 py-1.5 font-medium text-gray-600"
             >
                 Deep Learning
             </div>
@@ -16,7 +16,7 @@
             <h3
                 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600"
             >
-                <a href="./projects/pages/asl-fingerspell">
+                <a href="/projects/asl-fingerspell">
                     <span class="absolute inset-0" />
                     ASL Fingerspell Kaggle Submission
                 </a>
@@ -31,7 +31,7 @@
 </div>
 
 <style>
-    a{
+    a {
         color: #000e47;
     }
 </style>
