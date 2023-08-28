@@ -69,3 +69,9 @@ ul {
     text-indent:0;
     padding-left: 30pt;
 }
+
+
+table, th, td {
+    border-spacing: 1rem;
+    border-collapse: separate;
+}
