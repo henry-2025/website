@@ -4,8 +4,8 @@
 <header class="bg-gradient-to-l from-white">
   <nav class="mx-auto flex w-4/5 items-center justify-between p-6 lg:px-8" aria-label="Global">
     <div class="flex lg:flex-1">
-      <a href="/" class="-m-1.5 p-1.5 logo">
-        <img src="$lib/assets/logo.png" alt="logo" width="50px">
+      <a href="/" class="-m-1.5 text-4xl p-1.5 logo mix-blend-color-dodge">
+        JHP
       </a>
     </div>
     <div class="flex hidden">

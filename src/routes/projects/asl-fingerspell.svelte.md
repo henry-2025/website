@@ -1,11 +1,15 @@
 ---
-title: "Google ASL Fingerspell Kaggle Challenge: Pose estimates to text seq2seq model"
+title: "Kaggle ASL Fingerspell: Pose estimates to text seq2seq model"
+summary: "Methods and some takeaways from my first big deep learning project"
+category: "Deep Learning"
 date: "2023-08-27"
 ---
 
 <script>
   import dataset from '$lib/assets/asl-fingerspell/dataset.png';
   import sequence from '$lib/assets/asl-fingerspell/example_feature_sequence.gif';
+
+  let test = "l = {'test': 5}"
 </script>
 
 This was my submission to Google's ASL Fingerspell Challenge. It's not much and I still clearly have a long way to go before I can call myself an expert at this stuff. That said, I am proud of my work here and I don't think there have been many other times where I have learned this much in such a small amount of time. Because it is my first real deep learning project, this summary will be more in-depth than just a showcase. I try to recount all of my main challenges and learnings that came out of the engineering/research process. I also shouldn't go any further without thanking the couple of folks who provided their experienced advice when I needed their guidance. Know that your advice went a long way, helping me push through some of the moments of doubt and uncertainty in this.
@@ -57,7 +61,7 @@ You can see that in the following, these are the only utilities you need to get 
 def encode_example(sequence: np.ndarray, frame: np.ndarray):
     feature = dict()
     feature['sequence'] = tf.train.Feature(bytes_list=tf.train.BytesList(value=[sequence.tobytes()])),
-    feature['frame'] = tf.train.Feature(bytes_list=tf.train.BytesList(value=[frame.tobytes()]))
+    feature['frame'] = tf.train.Feature(bytes_list=t.train.BytesList(value=[frame.tobytes()]))
     return tf.train.Example(features=tf.train.Features(feature=feature)).SerializeToString() 
 
   def decode_example(b):
@@ -171,8 +175,15 @@ the Google ASL Kaggle challenge. ![training example]({sequence})
 
 In this section, I go over some of the big-picture principles that I discovered in this project and ones that I think will guide my work on future machine learning. If you're tired of reading at this point, go outside and get some exercise or give your eyes a rest. The following points are rather uninspired, obvious stuff. But if you are interested, then please read ahead because I do see these as the most valuable takeaways.
 
-### Project construction: expand outward not upward
-We know that pruning of redundant or irrelevant data is one of the main tasks of any remotely data-science work that one can think of. It also happens at the start of the processing 
+### Project construction: how to scale up
+When I first heard the word 'pipeline' I thought that the best way to build one was to follow the flow of data. Start out with the preprocessing, then get to the feature loading, provision your cloud resources, etc. until you have finished the last stage to complete in the pipeline. The problem with this approach is that how you design something in one stage affects the data that is ingested by all subsequent stages. This means that if I make a major oversight in stage one, I man not realize that I've messed up until the final step when I think I am about to be all set and done. This sort of "following the data" development was the way I learned to do things in my internships and it was probably justified in those scenarios because I was working with very standard constructs in software engineering like REST APIs and microservices. Here, there is much less of a framework that the processing fits into, meaning there is a lot more decision-making that an engineer will have to make concerning the handoffs at each stage.
+
+A very simple example of this was feature pruning. Feature pruning usually happens before the data is fed to the model and in that case, it was one of the first things I tried to engineer. When it came time to run training loops, I already had a frozen set of features that needed to be reprocessed if I wanted to try a different feature set. I had not even considered the fact that I might want to try running a training iteration on the pose and face points as well, which meant significant work had to go into reimplementing that feature in every stage of the pipeline. The argument here is not that I should have engineered more things on the first iteration of this project, quite the opposite actually. It is more that I should have focused on building an end-to-end system that satisfied the minimum constraints of the problem statement. Having this base system in place makes so many things easier because you can now build the model incrementally.
+
+If I were to do this project again, I would first preprocess the entire dataset with no feature pruning. I would then construct a training loop for the entire dataset and the simplest model possible that can pass the evaluation tests. A 
+
+
+ We know that pruning of redundant or irrelevant data is one of the main tasks of any remotely data-science work that one can think of. It also happens at the start of the processing 
 
 ### Model iteration
 
