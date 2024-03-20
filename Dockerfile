@@ -1,8 +1,17 @@
-FROM node:20 AS build
+FROM golang:1.22 AS build
 
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-CMD ["node", "build/index.js"]
+WORKDIR /usr/src/app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY ./ ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./site ./cmd/site
+
+FROM scratch AS runtime
+WORKDIR /usr/bin/app
+COPY --from=build /usr/src/app/site ./
+COPY static ./static
+
+EXPOSE 8080
+
+CMD ["./site"]

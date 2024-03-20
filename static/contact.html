@@ -1,0 +1,3 @@
+<h2>Contact</h2>
+<h3>Email</h3>
+<a href="mailto:1henrypick@gmail.com">1henrypick@gmail.com</a>

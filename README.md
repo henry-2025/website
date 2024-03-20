@@ -1,1 +1,0 @@
-My personal website as a Svelte project. 

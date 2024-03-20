@@ -1,0 +1,173 @@
+/*Fonts, set default to inconsolata wt 300, width 100*/
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+
+:root {
+    font-family: "Inconsolata", monospace;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+/*Header Style*/
+header {
+    font-variation-settings: "wdth" 125;
+    font-weight: 600;
+}
+
+.logo {
+    font-size: 1.5em;
+}
+
+nav {
+    margin: 1em 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+}
+
+header {
+    width: 100%;
+}
+
+.logo-container {
+    margin: 0 1em;
+}
+
+.nav-buttonset {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: right;
+}
+
+.nav-buttonset > a {
+    margin: 0 1em;
+}
+
+.nav-item {
+    text-decoration: underline;
+}
+
+/*Primary Document Styles*/
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.text {
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 25%;
+    z-index: 2;
+}
+
+.title-overlay {
+    position: relative;
+    mix-blend-mode: color-burn;
+    color: #544d4d;
+}
+
+.title-beneath {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    color: #0f0f0f;
+}
+
+p {
+    font-size: medium;
+    text-align: left;
+    text-indent: 0;
+}
+
+.site-landing {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.site-landing > * {
+    width: 50%;
+    margin: 2em 3em;
+}
+
+.site-landing > p {
+}
+
+#main-content {
+    margin: 0;
+    flex-grow: 1;
+}
+
+/*Projects*/
+
+.project-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.project-grid {
+    display: grid;
+}
+
+.project-summary > h3 {
+    font-size: 1em;
+    font-weight: 800;
+}
+
+.project-summary > p {
+    font-size: 0.5em;
+}
+.project-summary > time {
+    font-size: 0.5em;
+    background-color: red;
+    border-radius: 1rem;
+    padding: 0.5em;
+}
+
+.project-summary {
+    width: 10rem;
+    height: 10rem;
+    background-color: blue;
+    border-radius: 1rem;
+    padding: 1rem;
+    transition: 0.2s;
+    align-content: center;
+}
+
+.project-summary:hover {
+    scale: 1.05;
+}
+
+/*Footer Styles*/
+footer {
+    display: flex;
+    flex-direction: row;
+    font-variation-settings: "wdth" 125;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+    );
+}
+
+.socials {
+    display: flex;
+    flex-direction: row;
+    margin: 1em;
+}
+
+.socials > div {
+    margin: 1em;
+}
