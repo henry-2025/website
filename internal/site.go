@@ -14,7 +14,7 @@ import (
 type cacheIndex uint8
 
 const (
-	CSS cacheIndex = iota + 1
+	CSS cacheIndex = iota
 	PROJ
 	ABOUT
 	CONTACT

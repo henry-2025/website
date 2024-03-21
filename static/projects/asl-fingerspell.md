@@ -75,59 +75,60 @@ def encode_example(sequence: np.ndarray, frame: np.ndarray):
     feature['frame'] = tf.train.Feature(bytes_list=tf.train.BytesList(value=[frame.tobytes()]))
     return tf.train.Example(features=tf.train.Features(feature=feature)).SerializeToString()
 
-  def decode_example(b):
-      features = dict()
-      features['frame'] = tf.io.FixedLenFeature([], dtype=tf.dtypes.string)
-      features['sequence'] = tf.io.FixedLenFeature([], dtype=tf.dtypes.string)
+def decode_example(b):
+    features = dict()
+    features['frame'] = tf.io.FixedLenFeature([], dtype=tf.dtypes.string)
 
-      decoded = tf.io.parse_single_example(b, features)
-      decoded['frame'] = tf.reshape(tf.io.decode_raw(decoded['frame'], tf.dtypes.float32), (-1, N_FEATURES, 3))
-      decoded['sequence'] = tf.io.decode_raw(decoded['sequence'], tf.dtypes.int64)
-      return decoded
+    features['sequence'] = tf.io.FixedLenFeature([], dtype=tf.dtypes.string)
+
+    decoded = tf.io.parse_single_example(b, features)
+    decoded['frame'] = tf.reshape(tf.io.decode_raw(decoded['frame'], tf.dtypes.float32), (-1, N_FEATURES, 3))
+    decoded['sequence'] = tf.io.decode_raw(decoded['sequence'], tf.dtypes.int64)
+    return decoded
 
   # to write a chunk of examples, we use a utility like the following
-  def write_chunk(data, write_dir, chunk_num):
-          (frames, seqs), fold = data
-          chunk_size = len(frames)
-          filename = os.path.join(write_dir, f'fold{fold}-{chunk_num}-{chunk_size}.tfrecord')
-          options=tf.io.TFRecordOptions(compression_type='GZIP')
-          writer = tf.io.TFRecordWriter(filename, options=options)
-          for frame, sequence in zip(frames, seqs):
-              encoded_bytes = encode_example(sequence, frame)
-              writer.write(encoded_bytes)
-          writer.close()
+def write_chunk(data, write_dir, chunk_num):
+    (frames, seqs), fold = data
+    chunk_size = len(frames)
+    filename = os.path.join(write_dir, f'fold{fold}-{chunk_num}-{chunk_size}.tfrecord')
+    options = tf.io.TFRecordOptions(compression_type='GZIP')
+    writer = tf.io.TFRecordWriter(filename, options=options)
+        for frame, sequence in zip(frames, seqs):
+            encoded_bytes = encode_example(sequence, frame)
+            writer.write(encoded_bytes)
+        writer.close()
 
   # then when we want to load a dataset, we just have to map our decode function to the dataset
-  ds = tf.data.TFRecordDataset(['fold0-0-256.tfrecord', 'fold0-1-256.tfrecord', ...], compression_type='GZIP')
-  ds = ds.map(decode_example)
+ds = tf.data.TFRecordDataset(['fold0-0-256.tfrecord', 'fold0-1-256.tfrecord', ...], compression_type='GZIP')
+ds = ds.map(decode_example)
 ```
 
 The way to do something like chunked parallel loading datasets in PyTorch is a little bit more involved, but as is usual with the PyTorch/TensorFlow matchup, you trade off library conformity and a lot of pre-designed features for flexibility. Looking back on this project now, I do prefer the PyTorch method a little more because it encourages you to understand how your project is engineered as opposed to how to get TensorFlow to do what you want. The following is just a dataset of random normal floats and uniform integers that demonstrates how you can store associated features and labels with `torch.save`. Again, if you want to use worker processes to do the loading, you'll have to implement this yourself as PyTorch doesn't have any of those utilities
 
 ```python
 n_sequences = int(1e6)
-  max_seq_len = 384
-  min_seq_len = 50
+max_seq_len = 384
+min_seq_len = 50
 
-  max_label_len = 30
-  min_label_len = 10
+max_label_len = 30
+min_label_len = 10
 
-  n_features = 1630
-  n_tokens = 59
+n_features = 1630
+n_tokens = 59
 
-  sequence_lengths = torch.randint(n_sequences, min_seq_len, max_seq_len)
-  label_lengths = torch.randint(n_sequences, max_label_len, min_label_len)
+sequence_lengths = torch.randint(n_sequences, min_seq_len, max_seq_len)
+label_lengths = torch.randint(n_sequences, max_label_len, min_label_len)
 
-  # sorry about the for loops, this formatter doesn't support list comprehension
-  data = dict()
-  for i in range(n_sequences):
+# sorry about the for loops, this formatter doesn't support list comprehension
+data = dict()
+for i in range(n_sequences):
     example = dict()
     example['sequence'] = torch.randn((sequence_lengths[i], n_features))
     example['label'] = torch.randint(label_lengths[i], 0, n_tokens)
     data[i] = example
 
-  chunk_size = 256
-  for chunk in n_sequences // chunk_size:
+chunk_size = 256
+for chunk in n_sequences // chunk_size:
     chunk = dict()
     for i in range(chunk_size):
       chunk[i] = data[chunk*chunk_size + i]
@@ -163,15 +164,14 @@ I did some reading into how 1D CNNs are used for processing time-series and came
 ![Causal 1D Convolution](projects/asl-fingerspell/causal_conv.png)
 
 ```python
-
 class CausalConv(tf.keras.layers.Layer):
-  self.padding = tf.keras.Layers.ZeroPadding1D(padding=(kernel_size - 1, 0)
-  self.conv = tf.keras.layers.DepthwiseConv1D(kernel_size, padding='valid')
+    self.padding = tf.keras.Layers.ZeroPadding1D(padding=(kernel_size - 1, 0)
+    self.conv = tf.keras.layers.DepthwiseConv1D(kernel_size, padding='valid')
 
 def call(self, x):
-  x = self.padding(x)
-  x = self.conv(x)
-  return x
+    x = self.padding(x)
+    x = self.conv(x)
+    return x
 ```
 
 Once the first convolution has been applied to all channels, we encounter a lot of redundant crossing of channels if we continue to do full convolutions for all of the subsequent channel operations. This is the main principle behind depthwise convolution, which I think is a fairly standard operation in CV because both PyTorch and Keras have their own layers for the operation. I read the [papers with code](https://paperswithcode.com/method/depthwise-convolution) which had a great summary of how this has evolved in the field since fairly recently in 2016. In a 1D context, you can think of the depthwise convolution as a pointwise dot product between each channel in your input and a k-length vector in your kernel. We get to perform the operation without the extra output channel-length dimension in the convolution kernel, which is a significant reduction in the number of model parameters and the complexity of this operation.
@@ -185,7 +185,6 @@ Another mechanism that I came across which seems to result in [small but global 
 Implementing this as a neural net module is straight-forward: global average pooling is first performed along the last axis, we then have to reduce the empty axis before performing the convolution, we apply activation and finally, we perform the channel-wise multiplication with the input tensor:
 
 ```python
-
 class ChannelAttention(tf.keras.layers.Layer):
     '''An efficient channel attention mechanism as described in https://arxiv.org/abs/1910.03151'''
     def __init__(self, kernel_size=5, **kwargs):

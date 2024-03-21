@@ -148,6 +148,15 @@ p {
     scale: 1.05;
 }
 
+.project-article {
+    margin: 0 10em;
+}
+.chroma {
+    border-radius: 1em;
+    padding: 1em 2em;
+    box-shadow: 0 1em 1em;
+}
+
 /*Footer Styles*/
 footer {
     display: flex;

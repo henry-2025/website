@@ -44,6 +44,8 @@ func NewRenderer(codeStyle string) *Renderer {
 func parseProjectHeader(doc ast.Node) Project {
 	headerParsed := false
 	var p Project
+
+	// extract header
 	ast.WalkFunc(doc, func(node ast.Node, entering bool) ast.WalkStatus {
 		if text, ok := node.(*ast.Text); ok && entering && !headerParsed {
 			buf := bytes.NewBuffer(text.Leaf.Literal)
@@ -56,6 +58,39 @@ func parseProjectHeader(doc ast.Node) Project {
 		}
 		return ast.GoToNext
 	})
+
+	doc.SetChildren(append([]ast.Node{
+		&ast.Heading{
+			Level: 1,
+			Container: ast.Container{
+				Children: []ast.Node{
+					&ast.Text{
+						Leaf: ast.Leaf{
+							Literal: []byte(p.Title),
+						},
+					},
+				},
+			},
+		},
+		&ast.Text{
+			Leaf: ast.Leaf{
+				Literal: []byte("published: " + p.Date.String()),
+			},
+		},
+		&ast.Heading{
+			Level: 4,
+			Container: ast.Container{
+				Children: []ast.Node{
+					&ast.Text{
+						Leaf: ast.Leaf{
+							Literal: []byte("tl;dr " + p.Description),
+						},
+					},
+				},
+			},
+		},
+	}, doc.GetChildren()...))
+
 	return p
 }
 
@@ -65,8 +100,11 @@ func (r *Renderer) RenderProject(md []byte) Project {
 	proj := parseProjectHeader(doc)
 	renderer := newCustomizedRender(r)
 
-	source := markdown.Render(doc, renderer)
-	proj.Source = source
+	source := bytes.NewBuffer(nil)
+	source.WriteString(`<div class="project-article">`)
+	source.Write(markdown.Render(doc, renderer))
+	source.WriteString(`</div>`)
+	proj.Source = source.Bytes()
 	return proj
 }
 
@@ -98,13 +136,6 @@ func (r *Renderer) renderCode(w io.Writer, codeBlock *ast.CodeBlock, entering bo
 
 // where we apply any of the logic that is not processed in default rendering
 func (r *Renderer) myRenderHook(w io.Writer, node ast.Node, entering bool) (ast.WalkStatus, bool) {
-	if _, ok := node.(*ast.Document); ok && entering {
-		w.Write([]byte("<style>"))
-		r.htmlFormatter.WriteCSS(w, r.highlightStyle)
-		w.Write([]byte("</style>"))
-		return ast.GoToNext, false
-	}
-
 	if code, ok := node.(*ast.CodeBlock); ok {
 		r.renderCode(w, code, entering)
 		return ast.GoToNext, true
