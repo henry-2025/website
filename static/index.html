@@ -20,6 +20,7 @@
                         href="/"
                         hx-get="/"
                         hx-target="#main-content"
+                        hx-push-url="/"
                         class="logo"
                     >
                         JHP
@@ -29,6 +30,7 @@
                     <a
                         href="/projects"
                         hx-get="/projects"
+                        hx-push-url="/projects"
                         hx-target="#main-content"
                         class="nav-item"
                         >Projects</a
@@ -36,6 +38,7 @@
                     <a
                         href="/contact"
                         hx-get="/contact"
+                        hx-push-url="/contact"
                         hx-target="#main-content"
                         class="nav-item"
                         >Contact</a
@@ -43,6 +46,7 @@
                     <a
                         href="/about"
                         hx-get="/about"
+                        hx-push-url="/about"
                         hx-target="#main-content"
                         class="nav-item"
                         >About</a
@@ -50,14 +54,7 @@
                 </div>
             </nav>
         </header>
-        <section id="main-content">
-            <div class="site-landing">
-                <p>
-                    Hi, I'm Henry. This is my personal site where I host some
-                    projects, writeups, and other things
-                </p>
-            </div>
-        </section>
+        <section id="main-content">{{.}}</section>
         <section class="gradient-container">
             <canvas
                 id="gradient-canvas"

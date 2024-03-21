@@ -43,7 +43,7 @@ header {
     justify-content: right;
 }
 
-.nav-buttonset > a {
+.nav-buttonset>a {
     margin: 0 1em;
 }
 
@@ -94,13 +94,13 @@ p {
     flex-direction: column;
     align-items: end;
 }
-.site-landing > * {
+
+.site-landing>* {
     width: 50%;
     margin: 2em 3em;
 }
 
-.site-landing > p {
-}
+.site-landing>p {}
 
 #main-content {
     margin: 0;
@@ -115,30 +115,34 @@ p {
     flex-direction: column;
 }
 
-.project-grid {
+.project-list {
     display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows minmax(100px, auto);
 }
 
-.project-summary > h3 {
+.project-summary>h3 {
     font-size: 1em;
     font-weight: 800;
+    min-height: 30%;
 }
 
-.project-summary > p {
-    font-size: 0.5em;
+.project-summary>p {
+    font-size: 0.75em;
 }
-.project-summary > time {
-    font-size: 0.5em;
-    background-color: red;
+
+.project-summary>time {
+    font-size: 0.75em;
+    background-color: rgba(255, 2500);
     border-radius: 1rem;
     padding: 0.5em;
 }
 
 .project-summary {
-    width: 10rem;
-    height: 10rem;
-    background-color: blue;
-    border-radius: 1rem;
+    width: 10em;
+    background-color: rgba(150, 168, 227, 100);
+    border-radius: 1em;
     padding: 1rem;
     transition: 0.2s;
     align-content: center;
@@ -146,15 +150,25 @@ p {
 
 .project-summary:hover {
     scale: 1.05;
+    cursor: pointer;
 }
 
 .project-article {
     margin: 0 10em;
 }
+
 .chroma {
-    border-radius: 1em;
     padding: 1em 2em;
-    box-shadow: 0 1em 1em;
+}
+
+/*About, Contact*/
+.about,
+.contact {
+    margin: 0 10em;
+}
+
+.contact>h2 {
+    text-align: center;
 }
 
 /*Footer Styles*/
@@ -164,11 +178,9 @@ footer {
     font-variation-settings: "wdth" 125;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 1)
-    );
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 1));
 }
 
 .socials {
@@ -177,6 +189,6 @@ footer {
     margin: 1em;
 }
 
-.socials > div {
+.socials>div {
     margin: 1em;
 }
