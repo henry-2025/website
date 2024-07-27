@@ -5,6 +5,7 @@
         <article
             class="project-summary"
             hx-get="/projects/{{.Path}}"
+            hx-push-url="/projects/{{.Path}}"
             hx-target="#main-content"
         >
             <h3 class="project-title">{{.Title}}</h3>

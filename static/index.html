@@ -5,11 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>jhpick</title>
-        <link rel="stylesheet" href="style.css" />
-        <link rel="icon" href="favicon.png" type="image/x-icon" />
-        <link rel="mask-icon" href="favicon.png" type="image/x-icon" />
-        <script src="gradient.js"></script>
-        <script src="htmx.min.js"></script>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="icon" href="/favicon.png" type="image/x-icon" />
+        <link rel="mask-icon" href="/favicon.png" type="image/x-icon" />
+        <script src="/background.js"></script>
+        <script src="/htmx.min.js"></script>
     </head>
 
     <body>
@@ -54,13 +54,9 @@
                 </div>
             </nav>
         </header>
-        <section id="main-content">{{.}}</section>
-        <section class="gradient-container">
-            <canvas
-                id="gradient-canvas"
-                data-js-darken-top
-                data-transition-in
-            />
+        <section id="main-content">
+            {{.}}
+            <canvas id="gradient-canvas" />
         </section>
     </body>
 

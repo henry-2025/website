@@ -2,6 +2,8 @@ package internal
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
 	"html/template"
 	"log"
 	"mime"
@@ -9,38 +11,30 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/fsnotify/fsnotify"
 )
 
-type cacheIndex uint8
-
-const (
-	CSS cacheIndex = iota
-	PROJ
-	ABOUT
-	CONTACT
-	TEMPLATE
-	LANDING
-	INDEX
-)
-
-//TODO: must implement full-page and partial page rendering, which is done by checking the HX-Request header being set
 //TODO: test performance of caching verus non-caching
 
 type Site struct {
 	renderer     *Renderer
 	handleFuncs  map[string]func(w http.ResponseWriter, r *http.Request)
-	doCache      bool
-	pageCache    map[cacheIndex][]byte
 	projectCache map[string][]byte
+	index        *template.Template
+	css          []byte
+	projects     []byte
+	about        []byte
+	contact      []byte
+	landing      []byte
+	watch        bool
 }
 
-func NewSite(cache bool) *Site {
+func NewSite(watch bool) *Site {
 	return &Site{
 		renderer:     NewRenderer("dracula"),
-		handleFuncs:  nil,
-		pageCache:    make(map[cacheIndex][]byte),
+		watch:        watch,
 		projectCache: make(map[string][]byte),
-		doCache:      cache,
 	}
 }
 
@@ -56,6 +50,49 @@ func (s *Site) setupHandlers() {
 	}
 	for handler, function := range s.handleFuncs {
 		http.HandleFunc(handler, function)
+	}
+}
+
+func (s *Site) cachePages() {
+	//css
+	var err error
+	s.css, err = os.ReadFile("static/style.css")
+	if err != nil {
+		log.Fatalf("unable to load css file due to error: %s", err)
+	}
+	buf := bytes.NewBuffer(nil)
+	s.renderer.htmlFormatter.WriteCSS(buf, s.renderer.highlightStyle)
+	s.css = append(s.css, buf.Bytes()...)
+
+	// template
+	s.index, err = template.ParseFiles("static/index.html")
+	if err != nil {
+		log.Fatal("could not parse index template: ", err)
+	}
+
+	// projects and respective pages
+	var proj []Project
+	proj, s.projects = s.renderProjects()
+	for _, p := range proj {
+		s.projectCache[p.Path] = p.Source
+	}
+
+	// about
+	s.about, err = os.ReadFile("static/about.html")
+	if err != nil {
+		log.Fatal("could not load about.html: ", err)
+	}
+
+	// landing
+	s.landing, err = os.ReadFile("static/landing.html")
+	if err != nil {
+		log.Fatal("could not load landing.html: ", err)
+	}
+
+	// contact
+	s.contact, err = os.ReadFile("static/contact.html")
+	if err != nil {
+		log.Fatal("could not load contact.html: ", err)
 	}
 }
 
@@ -94,222 +131,105 @@ func (s *Site) renderProjects() ([]Project, []byte) {
 	return projects, payload.Bytes()
 }
 
+func (s *Site) watchStatic() error {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		return err
+	}
+
+	defer watcher.Close()
+
+	go func() {
+		log.Println("starting server")
+		http.ListenAndServe(":8080", nil)
+		log.Println("shutting down server")
+	}()
+
+	if err := watcher.Add("static"); err != nil {
+		return fmt.Errorf("unable to add static to watcher: %s", err)
+	}
+
+	for {
+		select {
+		case event, ok := <-watcher.Events:
+			if !ok {
+				return errors.New("watcher closed")
+			}
+			if event.Has(fsnotify.Write) {
+				log.Println("recaching pages")
+				s.cachePages()
+			}
+		case err, ok := <-watcher.Errors:
+			if !ok {
+				return errors.New("watcher closed")
+			}
+			log.Println("error:", err)
+		}
+	}
+}
+
 func (s *Site) SetupAndServe() {
 	s.setupHandlers()
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	s.cachePages()
+
+	if s.watch {
+		log.Fatal(s.watchStatic())
+	} else {
+		log.Fatal(http.ListenAndServe(":8080", nil))
+	}
 }
 
 func (s *Site) handleRoot(w http.ResponseWriter, r *http.Request) {
-	if !s.doCache {
-		if r.URL.Path != "/" {
-			//TODO: see if we can cache other data as well
-			http.ServeFile(w, r, filepath.Join("static", r.URL.String()))
-		} else if r.Header.Get("HX-Request") == "true" {
-			http.ServeFile(w, r, "static/landing.html")
-		} else {
-			tmpl, err := os.ReadFile("static/index.html")
-			if err != nil {
-				log.Fatal("could not load index: ", err)
-			}
-			landing, err := os.ReadFile("static/landing.html")
-			if err != nil {
-				log.Fatal("could not load landing: ", err)
-			}
-			t, err := template.New("index").Parse(string(tmpl))
-			if err != nil {
-				log.Fatal("could not parse index template: ", err)
-			}
-			buf := bytes.NewBuffer(nil)
-			t.Execute(buf, template.HTML(landing))
-			w.Write(buf.Bytes())
-		}
+	if r.URL.Path != "/" {
+		//TODO: see if we can cache other data as well
+		http.ServeFile(w, r, filepath.Join("static", r.URL.String()))
+	} else if r.Header.Get("HX-Request") == "true" {
+		w.Write(s.landing)
 	} else {
-		if r.URL.Path != "/" {
-			//TODO: see if we can cache other data as well
-			http.ServeFile(w, r, filepath.Join("static", r.URL.String()))
-		} else if r.Header.Get("HX-Request") == "true" {
-			payload, found := s.pageCache[LANDING]
-			if !found {
-				var err error
-				payload, err = os.ReadFile("static/landing.html")
-				if err != nil {
-					log.Fatal("unable to load landing file: ", err)
-				}
-			}
-			w.Write(payload)
-		} else {
-			payload, found := s.pageCache[INDEX]
-			if !found {
-				tmpl, found := s.pageCache[TEMPLATE]
-				if !found {
-					var err error
-					tmpl, err = os.ReadFile("static/index.html")
-					if err != nil {
-						log.Fatal("unable to load template file: ", err)
-					}
-					s.pageCache[TEMPLATE] = tmpl
-				}
-				landing, found := s.pageCache[TEMPLATE]
-				if !found {
-					var err error
-					landing, err = os.ReadFile("static/landing.html")
-					if err != nil {
-						log.Fatal("unable to load template file: ", err)
-					}
-					s.pageCache[LANDING] = landing
-				}
-				t, err := template.New("landing").Parse(string(tmpl))
-				if err != nil {
-					log.Fatal("error creating template", err)
-				}
-				p := bytes.NewBuffer(nil)
-				t.Execute(p, landing)
-				payload = p.Bytes()
-			}
-			w.Write(payload)
-		}
+		s.handleFill(w, r, s.landing)
 	}
 }
 
 func (s *Site) handleCss(w http.ResponseWriter, r *http.Request) {
-	css, found := s.pageCache[CSS]
-	if !found || !s.doCache {
-		var err error
-		css, err = os.ReadFile("static/style.css")
-		if err != nil {
-			log.Printf("unable to load css file due to error: %s", err)
-			http.Error(w, "Internal error", http.StatusInternalServerError)
-		}
-		buf := bytes.NewBuffer(nil)
-		s.renderer.htmlFormatter.WriteCSS(buf, s.renderer.highlightStyle)
-		css = append(css, buf.Bytes()...)
-		s.pageCache[CSS] = css
-	}
 	w.Header().Set("Content-Type", mime.TypeByExtension(".css"))
-	w.Write(css)
+	w.Write(s.css)
+}
+
+func (s *Site) handleFill(w http.ResponseWriter, r *http.Request, page []byte) {
+	if r.Header.Get("HX-Request") == "true" {
+		w.Write(page)
+	} else {
+		err := s.index.Execute(w, template.HTML(page))
+		if err != nil {
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			log.Print("unable to render template when handling fill: ", err)
+		}
+	}
 }
 
 func (s *Site) handleProjects(w http.ResponseWriter, r *http.Request) {
 	// load the project html. If cached, return that
-	if r.Header.Get("HX-Request") == "true" {
-		var payload []byte
-		if s.doCache {
-			var cached bool
-			payload, cached = s.pageCache[PROJ]
-			if !cached {
-				var projectSources []Project
-				projectSources, payload = s.renderProjects()
-				if s.doCache {
-					s.pageCache[PROJ] = payload
-					for _, p := range projectSources {
-						s.projectCache[p.Path] = p.Source
-					}
-				}
-			}
-		} else {
-			_, payload = s.renderProjects()
-		}
-		w.Write(payload)
-
-	} else {
-		tmpl, err := os.ReadFile("static/index.html")
-		if err != nil {
-			log.Fatal("could not load index: ", err)
-		}
-		_, payload := s.renderProjects()
-		t, err := template.New("index").Parse(string(tmpl))
-		if err != nil {
-			log.Fatal("could not parse index template: ", err)
-		}
-		buf := bytes.NewBuffer(nil)
-		t.Execute(buf, template.HTML(payload))
-		w.Write(buf.Bytes())
-	}
+	s.handleFill(w, r, s.projects)
 }
 func (s *Site) handleAbout(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("HX-Request") == "true" {
-		payload, cached := s.pageCache[ABOUT]
-		if !cached || s.doCache {
-			http.ServeFile(w, r, "static/about.html")
-			return
-		}
-		w.Write(payload)
-	} else {
-		tmpl, err := os.ReadFile("static/index.html")
-		if err != nil {
-			log.Fatal("could not load index: ", err)
-		}
-		about, err := os.ReadFile("static/about.html")
-		if err != nil {
-			log.Fatal("could not load index: ", err)
-		}
-		t, err := template.New("index").Parse(string(tmpl))
-		if err != nil {
-			log.Fatal("could not parse index template: ", err)
-		}
-		buf := bytes.NewBuffer(nil)
-		t.Execute(buf, template.HTML(about))
-		w.Write(buf.Bytes())
-	}
+	s.handleFill(w, r, s.about)
 }
 
 func (s *Site) handleContact(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("HX-Request") == "true" {
-		payload, cached := s.pageCache[CONTACT]
-		if !cached || s.doCache {
-			http.ServeFile(w, r, "static/contact.html")
-			return
-		}
-		w.Write(payload)
-	} else {
-		tmpl, err := os.ReadFile("static/index.html")
-		if err != nil {
-			log.Fatal("could not load index: ", err)
-		}
-		about, err := os.ReadFile("static/contact.html")
-		if err != nil {
-			log.Fatal("could not load index: ", err)
-		}
-		t, err := template.New("index").Parse(string(tmpl))
-		if err != nil {
-			log.Fatal("could not parse index template: ", err)
-		}
-		buf := bytes.NewBuffer(nil)
-		t.Execute(buf, template.HTML(about))
-		w.Write(buf.Bytes())
-	}
+	s.handleFill(w, r, s.contact)
 }
 
 func (s *Site) handleProjectWriteup(w http.ResponseWriter, r *http.Request) {
 	projectName := r.PathValue("p")
 	if source, found := s.projectCache[projectName]; found {
-		w.Write(source)
+		s.handleFill(w, r, source)
 		return
-	}
-	var (
-		projectSources []Project
-		found          bool
-		source         []byte
-	)
-
-	projectSources, _ = s.renderProjects()
-	for _, p := range projectSources {
-		if s.doCache {
-			s.projectCache[p.Path] = p.Source
-		}
-		if p.Path == projectName {
-			found = true
-			source = p.Source
-		}
-	}
-
-	if found {
-		w.Write(source)
 	} else {
-		http.NotFound(w, r)
+		http.Error(w, "resource not found", http.StatusNotFound)
+		log.Printf("requested project %s which was not found in the page cache", projectName)
 	}
 }
 
 func (s *Site) handleContactSubmit(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
+	http.Error(w, "not implemented", http.StatusNotImplemented)
 }
