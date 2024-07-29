@@ -1,4 +1,8 @@
-{"title": "This Site", "date": "2024-03-20", "description": "I reinvented the wheel on this site and I'm not ashamed of it"}
+---
+title: This Site
+date: 2024-03-20
+description: I reinvented the wheel on this site and I'm not ashamed of it
+---
 
 A lot of people looked at me with concern when I told them I spent an afternoon writing a backend using the go standard library to run this blog site. Why? There are tens of existing blog libraries for every which ui framework, so I could be saving myself not only an afternoon of redundant coding but also the work of one coder is almost never as good as a group of open source developers? Unless I can create a better experience than existing frameworks, then it makes no sense to try to recreate their functionality. I acknowledge all of these points and at every step of the way, it made me uncomfortable going against what seemed to be conventional engineering advice. With the project having reached a presentable state, however, I stand confidently on the side of my decisinion to do all this.
 
