@@ -1,17 +1,14 @@
-FROM golang:1.22 AS build
-
+FROM node:22-alpine as build
 WORKDIR /usr/src/app
-COPY go.mod go.sum ./
-RUN go mod download
-
+COPY package.json package-lock.json ./
+RUN npm install
 COPY ./ ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./site ./cmd/site
+RUN npm run build
 
-FROM scratch AS runtime
-WORKDIR /usr/bin/app
-COPY --from=build /usr/src/app/site ./
-COPY static ./static
+FROM node:22-alpine as runtime
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/package.json /usr/src/app/package-lock.json ./
+COPY --from=build /usr/src/app/build ./build
 
-EXPOSE 8080
-
-CMD ["./site"]
+EXPOSE 3000
+CMD ["node", "build"]
