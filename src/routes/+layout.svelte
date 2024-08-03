@@ -102,7 +102,7 @@
 
   /*Primary Document Styles*/
   body {
-    margin: 0;
+    margin: 0, 10em;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -131,5 +131,10 @@
 
   .socials > div {
     margin: 1em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
   }
 </style>

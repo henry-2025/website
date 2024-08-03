@@ -21,12 +21,11 @@ export async function load({ params }) {
     const postSource = await read(articlePaths[i].path).text();
     const ast = Markdoc.parse(postSource);
     const frontMatter = yaml.load(ast.attributes.frontmatter);
-    //const content = Markdoc.transform(ast /* config */);
-    //const html = Markdoc.renderers.html(content);
+    const date = frontMatter.date;
     data.push({
       title: frontMatter.title,
       description: frontMatter.description,
-      date: frontMatter.date,
+      date: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
       path: articlePaths[i].file,
     });
   }

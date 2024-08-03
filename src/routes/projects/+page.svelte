@@ -49,7 +49,7 @@
 
   article > time {
     font-size: 0.75em;
-    background-color: rgba(255, 2500);
+    background-color: rgba(175, 194, 255, 100);
     border-radius: 1rem;
     padding: 0.5em;
   }
@@ -62,10 +62,11 @@
     transition: 0.2s;
     align-content: center;
   }
-  a {
-    all: none;
-  }
 
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
   article:hover {
     scale: 1.05;
     cursor: pointer;

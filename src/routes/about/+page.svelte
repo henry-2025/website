@@ -85,9 +85,3 @@
   the greatest feelings in my life have come out of this sport. There is really
   no reason to give it up right now while it's still hot on my plate.
 </p>
-
-<style>
-  :root {
-    margin: 0 10em;
-  }
-</style>

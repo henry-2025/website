@@ -6,9 +6,6 @@
 </form>
 
 <style>
-  :root {
-    margin: 0 10em;
-  }
   h2 {
     text-align: center;
   }
