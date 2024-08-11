@@ -16,7 +16,6 @@
         </div>
         <div class="nav-buttonset">
           <a href="/projects" class="nav-item">Projects</a>
-          <a href="/contact" class="nav-item">Contact</a>
           <a href="/about" class="nav-item">About</a>
         </div>
       </nav>
