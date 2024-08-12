@@ -4,6 +4,7 @@ date: 2023-08-27
 description: designing, training, and deploying a seq2seq model that estimates sign language from pose estimates
 ---
 
+# Google ASL Fingerspell Kaggle Challenge
 This was my submission to Google's ASL Fingerspell Challenge. It's not much and I still clearly have a long way to go before I can call myself an expert at this stuff. That said, I am proud of my work here and I don't think there have been many other times where I have learned this much in such a small amount of time. Because it is my first real deep learning project, this summary will be more in-depth than just a showcase. I try to recount all of my main challenges and learnings that came out of the engineering/research process. I also shouldn't go any further without thanking the couple of folks who provided their experienced advice when I needed their guidance. Know that your advice went a long way, helping me push through some of the moments of doubt and uncertainty in this.
 
 The code for the project can be found [here](https://www.github.com/henry-2025/asl-fingerspell)

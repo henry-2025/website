@@ -22,7 +22,6 @@
     </header>
     <slot></slot>
   </body>
-
   <footer>
     <p>Copyright all rights reserved JHP Consulting LLC</p>
     <div class="socials">
@@ -101,10 +100,10 @@
 
   /*Primary Document Styles*/
   body {
-    margin: 0, 10em;
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
+    margin: 0 10vw;
   }
 
   /*Footer Styles*/
@@ -114,6 +113,7 @@
     font-variation-settings: "wdth" 125;
     justify-content: center;
     align-items: center;
+    height: 5vh;
     background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0),
