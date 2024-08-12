@@ -4,11 +4,15 @@
 
 <link rel="stylesheet" href="/style/prism.css" />
 
-<div id="article">{@html data.content}</div>
+<div>{@html data.content}</div>
 
 <style>
   :global(article) {
     text-align: start;
+    margin: 5em 2em;
+    padding: 2em 3em;
+    background-color: rgba(150, 168, 227, 100);
+    border-radius: 1em;
   }
   :global(article > p) {
     text-indent: 2rem;
@@ -17,7 +21,7 @@
     text-align: center;
   }
   :global(article > h1) {
-    margin: 4em 0;
+    margin: 1em 0 2em 0;
   }
   :global(article > pre) {
     background-color: white;
@@ -26,10 +30,11 @@
     white-space: pre-wrap;
   }
 
-  #article {
-    margin: 5em 2em;
-    padding: 0 3em 0 3em;
-    background-color: rgba(150, 168, 227, 100);
-    border-radius: 1em;
+  @media (max-width: 800px) {
+    :global(article) {
+      margin: 2em 0;
+      padding: 2em 3em;
+      border-radius: 1em;
+    }
   }
 </style>

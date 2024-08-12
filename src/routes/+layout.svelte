@@ -1,3 +1,11 @@
+<script>
+  import { fade } from "svelte/transition";
+
+  export let data;
+
+  $: pathname = data.pathname;
+</script>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,7 +28,11 @@
         </div>
       </nav>
     </header>
-    <slot></slot>
+    {#key pathname}
+      <div in:fade={{ duration: 300, delay: 400 }} out:fade={{ duration: 300 }}>
+        <slot></slot>
+      </div>
+    {/key}
   </body>
   <footer>
     <p>Copyright all rights reserved JHP Consulting LLC</p>
@@ -135,5 +147,15 @@
   a {
     color: inherit;
     text-decoration: inherit;
+  }
+
+  @media (max-width: 800px) {
+    body {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+    }
   }
 </style>
