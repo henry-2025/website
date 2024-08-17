@@ -1,14 +1,17 @@
 <script>
-  /** @typedef Article
-      @type{object}
-      @property {string} title
-      @property {string} path
-      @property {Date} date
-      @property {string} description */
+  /**
+   * @typedef Article
+   * @type{object}
+   * @property {string} title
+   * @property {string} path
+   * @property {Date} date
+   * @property {string} description
+   */
 
-  /** @typedef Data
-      @property{Array<Article>} articles
-  */
+  /**
+   * @typedef Data
+   * @property{Array<Article>} articles
+   */
 
   /** @type {Data} */
   export let data;
@@ -18,17 +21,17 @@
   <div class="project-list">
     {#each data.articles as article}
       <a href="/projects/{article.path}">
-        <article>
+        <div class="article-summary">
           <h3>
             {article.title}
           </h3>
           <time>
-            {article.date}
+            {`${article.date.getMonth()}.${article.date.getDay()}.${article.date.getFullYear()}`}
           </time>
           <p>
             {article.description}
           </p>
-        </article>
+        </div>
       </a>
     {/each}
   </div>
@@ -45,39 +48,41 @@
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(3, 1fr);
+    align-items: center;
   }
 
-  article > h3 {
+  .article-summary > h3 {
     font-size: 1em;
     font-weight: 800;
     min-height: 30%;
   }
 
-  article > p {
+  .article-summary > p {
     font-size: 0.75em;
   }
 
-  article > time {
+  .article-summary > time {
     font-size: 0.75em;
     background-color: rgba(175, 194, 255, 100);
     border-radius: 1rem;
     padding: 0.5em;
   }
 
-  article {
+  .article-summary {
     width: 10em;
     background-color: rgba(150, 168, 227, 100);
     border-radius: 1em;
     padding: 1rem;
     transition: 0.2s;
     align-content: center;
+    margin: 2em;
   }
 
   a {
     color: inherit;
     text-decoration: inherit;
   }
-  article:hover {
+  .article-summary:hover {
     scale: 1.05;
     cursor: pointer;
   }

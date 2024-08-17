@@ -32,7 +32,7 @@ const articleFiles: [string, File][] = Object.entries(
 
 const articlePaths: FilePath[] = articleFiles.map((entry) => {
   let file = entry[0].replace(/^.*[\\/]/, "");
-  file = file.substr(0, file.length - 3);
+  file = file.substring(0, file.length - 3);
   return { file: file, path: entry[1].default };
 });
 
@@ -47,9 +47,12 @@ export const load: PageServerLoad = async ({ params }) => {
     data.push({
       title: frontMatter.title,
       description: frontMatter.description,
-      date: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
+      date: date,
       path: articlePaths[i].file,
     });
   }
+  data.sort((a, b) => {
+    return b.date - a.date;
+  });
   return { articles: data };
 };
