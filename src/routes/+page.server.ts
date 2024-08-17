@@ -1,26 +1,48 @@
 import { read } from "$app/server";
 import Markdoc from "@markdoc/markdoc";
 import yaml from "js-yaml";
+import type { PageServerLoad } from "./$types";
 
-const articlePaths = Object.entries(
-  import.meta.glob("./pages/*.md", {
+interface FrontMatter {
+  title: string;
+  date: Date;
+  description: string;
+}
+
+interface FrontMatter {
+  title: string;
+  description: string;
+  date: Date;
+}
+
+interface File {
+  default: string;
+}
+
+interface FilePath {
+  file: string;
+  path: string;
+}
+const articleFiles: [string, File][] = Object.entries(
+  import.meta.glob("../../static/pages/*.md", {
     query: "?url",
     eager: true,
   }),
-).map((entry) => {
+);
+
+const articlePaths: FilePath[] = articleFiles.map((entry) => {
   let file = entry[0].replace(/^.*[\\/]/, "");
   file = file.substr(0, file.length - 3);
   return { file: file, path: entry[1].default };
 });
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ params }) {
-  /** @type Array<Object> */
+export const load: PageServerLoad = async ({ params }) => {
   let data = [];
   for (let i = 0; i < articlePaths.length; i++) {
     const postSource = await read(articlePaths[i].path).text();
     const ast = Markdoc.parse(postSource);
-    const frontMatter = yaml.load(ast.attributes.frontmatter);
+
+    const frontMatter = yaml.load(ast.attributes.frontmatter) as FrontMatter;
     const date = frontMatter.date;
     data.push({
       title: frontMatter.title,
@@ -30,4 +52,4 @@ export async function load({ params }) {
     });
   }
   return { articles: data };
-}
+};

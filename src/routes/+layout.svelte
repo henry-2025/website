@@ -23,10 +23,10 @@
           <a href="/" class="logo"> JHP </a>
         </div>
         <div class="nav-buttonset">
-          <a href="/projects" class="nav-item">Projects</a>
           <a href="/about" class="nav-item">About</a>
         </div>
       </nav>
+      <hr />
     </header>
     {#key pathname}
       <div in:fade={{ duration: 300, delay: 400 }} out:fade={{ duration: 300 }}>
@@ -112,7 +112,7 @@
 
   /*Primary Document Styles*/
   body {
-    min-height: 90vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     margin: 0 10vw;

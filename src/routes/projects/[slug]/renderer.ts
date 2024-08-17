@@ -46,13 +46,16 @@ export default function render(node: RenderableTreeNodes): string {
   // render code with prisjs
   if (name === "pre") {
     var autoloader = Prism.plugins.autoloader;
-    let renderer = Prism.languages.python; //[attributes["data-language"]];
+    let renderer = Prism.languages.python;
     if (renderer != null) {
       if (children.length != 1) {
         console.error(
           `expected children with length 1, but got length ${children.length}`,
         );
       } else {
+        if (typeof children[0] != "string") {
+          throw TypeError("expected string for arg 0 of children");
+        }
         output += Prism.highlight(
           children[0],
           renderer,

@@ -1,5 +1,17 @@
 <script>
-  /** @type {import('./$types').PageServerData} */
+  /**
+   * @typedef Article
+   * @property{string} title
+   * @property{Date} date
+   * @property{string} description
+   * @property{string} path */
+
+  /**
+   * @typedef PageServerData
+   * @property{Article[]} articles
+   */
+
+  /** @type {PageServerData} */
   export let data;
 </script>
 
