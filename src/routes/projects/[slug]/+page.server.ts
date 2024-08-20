@@ -1,10 +1,17 @@
 import { read } from "$app/server";
 import Markdoc from "@markdoc/markdoc";
 import render from "./renderer";
+import yaml from "js-yaml";
 import type { PageServerLoad } from "./$types";
 
 interface FilePath {
   default: string;
+}
+
+interface FrontMatter {
+  title: string;
+  description: string;
+  date: Date;
 }
 
 const articles: Record<string, FilePath> = import.meta.glob(
@@ -30,7 +37,13 @@ export const load: PageServerLoad = async ({ params }) => {
   }
   const postSource = await read(file).text();
   const ast = Markdoc.parse(postSource);
-  const content = Markdoc.transform(ast /* config */);
+  const frontmatter = yaml.load(ast.attributes.frontmatter);
+  const config = {
+    variables: {
+      frontmatter,
+    },
+  };
+  const content = Markdoc.transform(ast, config);
   const html = render(content);
   return {
     content: html,

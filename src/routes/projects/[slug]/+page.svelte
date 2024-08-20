@@ -2,9 +2,14 @@
   export let data;
 </script>
 
+<div>{@html data.content}</div>
 <link rel="stylesheet" href="/style/prism.css" />
 
-<div>{@html data.content}</div>
+<svelte:head>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+  </style>
+</svelte:head>
 
 <style>
   :global(article) {
@@ -13,6 +18,7 @@
     padding: 2em 3em;
     background-color: rgba(150, 168, 227, 100);
     border-radius: 1em;
+    font-family: "Roboto Condensed";
   }
   :global(article > p) {
     text-indent: 2rem;
@@ -29,10 +35,13 @@
     border-radius: 1em;
     white-space: pre-wrap;
   }
+  :global(article > table) {
+    font-family: "Inconsolata", monospace;
+  }
 
   @media (max-width: 800px) {
     :global(article) {
-      margin: 2em 0;
+      margin: 1em 0;
       padding: 2em 3em;
       border-radius: 1em;
     }

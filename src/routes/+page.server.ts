@@ -52,7 +52,7 @@ export const load: PageServerLoad = async ({ params }) => {
     });
   }
   data.sort((a, b) => {
-    return b.date - a.date;
+    return b.date.getTime() - a.date.getTime();
   });
   return { articles: data };
 };

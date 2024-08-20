@@ -43,7 +43,7 @@ export default function render(node: RenderableTreeNodes): string {
 
   if (voidElements.has(name)) return output;
 
-  // render code with prisjs
+  // render code with prismjs
   if (name === "pre") {
     var autoloader = Prism.plugins.autoloader;
     let renderer = Prism.languages.python;

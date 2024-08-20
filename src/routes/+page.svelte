@@ -46,7 +46,6 @@
 
   .project-list {
     display: grid;
-    gap: 10px;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
   }
@@ -75,7 +74,7 @@
     padding: 1rem;
     transition: 0.2s;
     align-content: center;
-    margin: 2em;
+    margin: 1em;
   }
 
   a {
@@ -85,5 +84,23 @@
   .article-summary:hover {
     scale: 1.05;
     cursor: pointer;
+  }
+
+  @media (max-width: 800px) {
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .article-summary {
+      background-color: rgba(150, 168, 227, 100);
+      border-radius: 1em;
+      padding: 1rem;
+      transition: 0.2s;
+      align-content: center;
+      margin: 1em;
+      width: fit-content;
+    }
   }
 </style>
