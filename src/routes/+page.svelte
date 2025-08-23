@@ -13,8 +13,14 @@
    * @property{Array<Article>} articles
    */
 
-  /** @type {Data} */
-  export let data;
+  
+  /**
+   * @typedef {Object} Props
+   * @property {Data} data
+   */
+
+  /** @type {Props} */
+  let { data } = $props();
 </script>
 
 <div class="project-content">
