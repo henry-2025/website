@@ -1,41 +1,22 @@
-<script>
-  /**
-   * @typedef Article
-   * @type{object}
-   * @property {string} title
-   * @property {string} path
-   * @property {Date} date
-   * @property {string} description
-   */
+<script lang=ts>
+    import type { Post } from '$lib/blog/posts.js';
 
-  /**
-   * @typedef Data
-   * @property{Array<Article>} articles
-   */
-
-  
-  /**
-   * @typedef {Object} Props
-   * @property {Data} data
-   */
-
-  /** @type {Props} */
-  let { data } = $props();
+  export let data: {posts: Array<Post>};
 </script>
 
 <div class="project-content">
   <div class="project-list">
-    {#each data.articles as article}
-      <a href="/projects/{article.path}">
+    {#each data.posts as post}
+      <a href="/blog/{post.slug}">
         <div class="article-summary">
           <h3>
-            {article.title}
+            {post.title}
           </h3>
           <time>
-            {`${article.date.getMonth()}.${article.date.getDay()}.${article.date.getFullYear()}`}
+            {`${post.date.getMonth()}.${post.date.getDay()}.${post.date.getFullYear()}`}
           </time>
           <p>
-            {article.description}
+            {post.description}
           </p>
         </div>
       </a>
