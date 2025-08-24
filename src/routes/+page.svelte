@@ -1,12 +1,15 @@
-<script lang=ts>
-    import type { Post } from '$lib/blog/posts.js';
+<script lang="ts">
+  import type { Post } from "$lib/blog/posts.js";
 
-  export let data: {posts: Array<Post>};
+  export let data: { posts: Array<Post> };
+  let sortedPosts = data.posts.sort(
+    (a, b) => b.date.getTime() - a.date.getTime(),
+  );
 </script>
 
 <div class="project-content">
   <div class="project-list">
-    {#each data.posts as post}
+    {#each sortedPosts as post}
       <a href="/blog/{post.slug}">
         <div class="article-summary">
           <h3>

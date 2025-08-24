@@ -1,19 +1,35 @@
 <script>
+  import { onNavigate } from "$app/navigation";
+
+  onNavigate((navigation) => {
+    if (!document.startViewTransition) return;
+    if (navigation.from?.route.id === navigation.to?.route.id) return;
+
+    return new Promise((resolve) => {
+      document.startViewTransition(async () => {
+        resolve();
+        await navigation.complete;
+      });
+    });
+  });
+
   let { children } = $props();
 </script>
 
-
-<div class="layout-container">
+<div class="page-container">
   <header>
     <nav>
       <a href="/">blog</a>
       <a href="/about">about</a>
     </nav>
+    <div class="banner">Jonathan Pick</div>
   </header>
 
-  <main class="main-content">
-    {@render children()}
-  </main>
+  <div class="viewing-content">
+    <main>
+      {@render children()}
+    </main>
+  </div>
 
   <footer>
     <p>Copyright all rights reserved Jhpick Consulting LLC</p>
@@ -49,8 +65,7 @@
     font-style: normal;
   }
 
-
-  .layout-container {
+  .page-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -58,29 +73,48 @@
 
   header {
     font-weight: 600;
+    background-image:
+      url("/banner-image.jpeg"), url("/banner-music.jpeg"),
+      url("/banner-running.jpeg");
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size: 45em, 45em, 50em;
+    background-position:
+      bottom left,
+      45em 0,
+      90em -5em;
+    width: 100%;
+    z-index: 2;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 20em;
+    view-transition-name: header;
   }
 
   nav {
-    margin: 1em 1em;
-    align-items: center;
+    margin: 0;
+    width: 100%;
+    height: fit-content;
+    color: black;
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
   }
 
-  header {
-    width: 100%;
-    z-index: 2;
-    height: 10vh;
-  }
-
-  nav>a {
-    margin: 0 1em;
+  nav > a {
+    padding: 1em;
+    margin: 0;
     text-decoration: underline;
   }
 
-  main.main-content {
+  main {
+    width: 50vw;
+  }
+
+  .viewing-content {
+    display: flex;
     flex: 1 0 auto;
+    justify-content: center;
   }
 
   footer {
@@ -95,6 +129,7 @@
       rgba(255, 255, 255, 1)
     );
     z-index: 2;
+    view-transition-name: footer;
   }
 
   .socials {
@@ -107,8 +142,60 @@
     margin: 1em;
   }
 
+  .banner {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-size: 3em;
+    font-weight: bold;
+    width: fit-content;
+    padding: 0 2em;
+    vertical-align: middle;
+    height: 3em;
+    color: orangered;
+    mix-blend-mode: plus-lighter;
+    text-shadow: #ff3f2d 1px 0 10px;
+    view-transition-name: banner;
+  }
+
   a {
     color: inherit;
     text-decoration: inherit;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-from-right {
+    from {
+      transform: translateX(30px);
+    }
+  }
+
+  @keyframes slide-to-left {
+    to {
+      transform: translateX(-30px);
+    }
+  }
+
+  :root::view-transition-old(root) {
+    animation:
+      90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+      300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+  }
+
+  :root::view-transition-new(root) {
+    animation:
+      210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+      300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
   }
 </style>

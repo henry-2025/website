@@ -4,6 +4,13 @@ export interface Post {
     slug: string;
     date: Date;
     description: string;
+    category: Category;
+}
+
+export enum Category {
+    Engineering,
+    Music,
+    Running,
 }
 
 export const posts: Array<Post> = [
@@ -13,11 +20,20 @@ export const posts: Array<Post> = [
         date: new Date("2023-08-27"),
         description:
             "designing, training, and deploying a seq2seq model that estimates sign language from pose estimates",
+            category: Category.Engineering,
     },
     {
-        title: "Iterations of This Site",
-        slug: "this-site",
+        title: "Can I Finally Build This Site?",
+        slug: "can-i-finally-build-this-site",
         date: new Date("2024-03-20"),
-        description: "A documentation of the iterations of this site",
-    }
+        description: "What taking two years to put this site up taught me about software engineering",
+        category: Category.Engineering,
+    },
+    {
+         title: "Building a Reactive Audio Visualizer",
+        slug: "reactive-audio-visualizer",
+        date: new Date("2025-04-20"),
+        description: "Processing, streaming, and visualizing sounds on some hardware I put together",
+        category: Category.Engineering,
+    },
 ]

@@ -1,11 +1,15 @@
-<script lang=ts>
-    import type {Post} from '$lib/blog/posts.ts';
-    export let data: Post;
+<script lang="ts">
+    import type { Post } from "$lib/blog/posts.ts";
+    export let data: { post: Post };
 </script>
 
-<h1>{data.title}</h1>
-<h2>{data.description}</h2>
-<div class="date">{data.date}</div>
+<h1>{data.post.title}</h1>
+<h2>{data.post.description}</h2>
+<div>
+    <time>
+        {`${data.post.date.getMonth()}.${data.post.date.getDay()}.${data.post.date.getFullYear()}`}
+    </time>
+</div>
 
 <p>
     This was my submission to Google's ASL Fingerspell Challenge. It's not much

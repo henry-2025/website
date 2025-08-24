@@ -1,11 +1,15 @@
 <script lang="ts">
     import type { Post } from "$lib/blog/posts.ts";
-    export let data: Post;
+    export let data: { post: Post };
 </script>
 
-<h1>{data.title}</h1>
-<h2>{data.description}</h2>
-<div class="date">{data.date}</div>
+<h1>{data.post.title}</h1>
+<h2>{data.post.description}</h2>
+<div>
+    <time>
+        {`${data.post.date.getMonth()}.${data.post.date.getDay()}.${data.post.date.getFullYear()}`}
+    </time>
+</div>
 
 <p>
     A lot of people looked at me with concern when I told them I spent an
