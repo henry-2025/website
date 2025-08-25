@@ -1,16 +1,3 @@
-<script lang="ts">
-    import type { Post } from "$lib/blog/posts.ts";
-    export let data: { post: Post };
-</script>
-
-<h1>{data.post.title}</h1>
-<div class="subtitle">{data.post.description}</div>
-<div>
-    <time>
-        {`${data.post.date.getMonth()}.${data.post.date.getDay()}.${data.post.date.getFullYear()}`}
-    </time>
-</div>
-
 <p>
     <strong>B</strong>eing able to host a dance party in my apartment might be a
     thing of a past, more collegiate era. I nonetheless embarked on this project

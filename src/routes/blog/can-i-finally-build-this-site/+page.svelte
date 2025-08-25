@@ -1,18 +1,5 @@
-<script lang="ts">
-    import type { Post } from "$lib/blog/posts.ts";
-    export let data: { post: Post };
-</script>
-
-<h1>{data.post.title}</h1>
-<h2>{data.post.description}</h2>
-<div>
-    <time>
-        {`${data.post.date.getMonth()}.${data.post.date.getDay()}.${data.post.date.getFullYear()}`}
-    </time>
-</div>
-
 <p>
-    A lot of people looked at me with concern when I told them I spent an
+    <strong>A</strong> lot of people looked at me with concern when I told them I spent an
     afternoon writing a backend using the go standard library to run this blog
     site. Why? There are tens of existing blog libraries for every which ui
     framework, so I could be saving myself not only an afternoon of redundant

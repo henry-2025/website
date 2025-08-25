@@ -22,7 +22,7 @@
       <a href="/">blog</a>
       <a href="/about">about</a>
     </nav>
-    <div class="banner">Jonathan Pick</div>
+    <!-- <div class="banner"></div> TODO: figure out banner for site-->
   </header>
 
   <div class="viewing-content">
@@ -74,14 +74,9 @@
   header {
     font-weight: 600;
     background-image:
-      url("/banner-image.jpeg"), url("/banner-music.jpeg"),
-      url("/banner-running.jpeg");
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-size: 45em, 45em, 50em;
-    background-position:
-      bottom left,
-      45em 0,
-      90em -5em;
+      url("/banner-image.jpeg");
+    background-repeat: no-repeat;
+    background-size: 100vw;
     width: 100%;
     z-index: 2;
     display: flex;

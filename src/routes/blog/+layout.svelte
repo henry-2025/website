@@ -1,17 +1,33 @@
 <script lang="ts">
-  let { children } = $props();
+  import type { Post } from "$lib/blog/posts";
+  import { page } from "$app/state";
+  let { data, children }: { data: { posts: Array<Post> }; children: any } =
+    $props();
+
+    let activePost: Post | undefined = data.posts.filter(post => page.url.pathname.endsWith(post.slug)).at(0);
+    if (activePost === undefined) {
+      throw new Error(`unable to find post metadata for the slug ${page.url.pathname}`)
+    }
+
 </script>
 
 <article>
+  <h1>{activePost.title}</h1>
+  <h2>{activePost.description}</h2>
+  <div>
+    <time>
+      {`${activePost.date.getMonth() + 1}.${activePost.date.getDate() + 1}.${activePost.date.getFullYear()}`}
+    </time>
+  </div>
   {@render children()}
 </article>
 
 <link rel="stylesheet" href="/style/prism.css" />
 
 <svelte:head>
- <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-</style>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+  </style>
 </svelte:head>
 
 <style>
@@ -42,16 +58,16 @@
   :global(article > table) {
     font-family: "Inconsolata", monospace;
   }
-  :global(article>p>strong) {
+  :global(article > p > strong) {
     font-size: 3em;
     color: rgba(150, 168, 227, 100);
   }
 
-  :global(article>img) {
+  :global(article > img) {
     max-width: 100%;
   }
 
-  :global(article>.footnotes) {
+  :global(article > .footnotes) {
     word-wrap: break-word;
     font-size: small;
     background-color: white;
