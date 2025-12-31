@@ -38,7 +38,13 @@
 	 */
 	"assets": {
 		"directory": "./build/",
-	}
+	},
+	"r2_buckets": [
+		{
+			"bucket_name": "photos",
+			"binding": "photos"
+		}
+	]
 	/**
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
