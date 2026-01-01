@@ -48,7 +48,7 @@
         <button class="close-btn" onclick={closeLightbox}>[x]</button>
         <div class="lightbox-content" onclick={(e) => e.stopPropagation()}>
             <img
-                src="https://jhpick.com/{selectedPhoto.file}"
+                src="https://static.jhpick.com/{selectedPhoto.file}"
                 alt={selectedPhoto.title}
             />
             <p class="lightbox-caption">{selectedPhoto.title}</p>
