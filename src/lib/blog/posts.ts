@@ -23,13 +23,6 @@ export const posts: Array<Post> = [
         category: Category.Engineering,
     },
     {
-        title: "Can I Finally Build This Site?",
-        slug: "can-i-finally-build-this-site",
-        date: new Date("2024-03-20"),
-        description: "What taking two years to put this site up taught me about software engineering",
-        category: Category.Engineering,
-    },
-    {
         title: "Building a Reactive Audio Visualizer",
         slug: "reactive-audio-visualizer",
         date: new Date("2025-04-20"),
