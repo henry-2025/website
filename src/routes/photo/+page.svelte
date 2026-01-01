@@ -32,7 +32,7 @@
 <div class="random-layout">
     {#each data.photos as photo}
         <button class="masonry-item" onclick={() => openLightbox(photo)}>
-            <img src="https://jhpick.com/{photo.file}" alt={photo.title} />
+            <img src="https://static.jhpick.com/{photo.file}" alt={photo.title} />
         </button>
     {/each}
 </div>
