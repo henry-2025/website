@@ -46,11 +46,13 @@
 </code></pre>
 
 <p>
-    As I said earlier, this runs on an Esp8266 (actually an esp-01 that I had laying around from )
-    I decided some time ago that systems was the lowest level I could go while
-    still maintaining my sanity writing code, so I ended up using the Esp8266
-    and NeoPixel libraries to do the heavy lifting with networking, addressing
-    the LED strip, and whatever ESP wrangling needs to be done. The arduino sketch for this was thankfully incredibly small and is probably not going to see many code changes going forward
+    As I said earlier, this runs on an Esp8266 (actually an esp-01 that I had
+    laying around from ) I decided some time ago that systems was the lowest
+    level I could go while still maintaining my sanity writing code, so I ended
+    up using the Esp8266 and NeoPixel libraries to do the heavy lifting with
+    networking, addressing the LED strip, and whatever ESP wrangling needs to be
+    done. The arduino sketch for this was thankfully incredibly small and is
+    probably not going to see many code changes going forward
 </p>
 
 <div class="footnotes">
