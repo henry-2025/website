@@ -10,28 +10,29 @@
 
     function openLightbox(photo: Photo) {
         selectedPhoto = photo;
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = "hidden";
     }
 
     function closeLightbox() {
         selectedPhoto = null;
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
     }
 
-    addEventListener("keypress", (event: KeyboardEvent) => {
-        console.log(event.key);
-        if (event.key === "Escape") {
+    function handleKeyDown(event: KeyboardEvent) {
+         if (event.key === "Escape") {
             closeLightbox();
         }
-    })
+    }
 </script>
+
+<svelte:window on:keydown={handleKeyDown}></svelte:window>
 
 <h2>Photo</h2>
 
 <div class="random-layout">
     {#each data.photos as photo}
         <button class="masonry-item" onclick={() => openLightbox(photo)}>
-            <img src="https://jhpick.com/{photo.file}" alt={photo.caption} />
+            <img src="https://jhpick.com/{photo.file}" alt={photo.title} />
         </button>
     {/each}
 </div>
@@ -39,11 +40,18 @@
 {#if selectedPhoto}
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <div transition:fade={{duration: 200}} class="lightbox" onclick={closeLightbox}>
+    <div
+        transition:fade={{ duration: 200 }}
+        class="lightbox"
+        onclick={closeLightbox}
+    >
         <button class="close-btn" onclick={closeLightbox}>[x]</button>
         <div class="lightbox-content" onclick={(e) => e.stopPropagation()}>
-            <img src="https://jhpick.com/{selectedPhoto.file}" alt={selectedPhoto.caption} />
-            <p class="lightbox-caption">{selectedPhoto.caption}</p>
+            <img
+                src="https://jhpick.com/{selectedPhoto.file}"
+                alt={selectedPhoto.title}
+            />
+            <p class="lightbox-caption">{selectedPhoto.title}</p>
         </div>
     </div>
 {/if}
