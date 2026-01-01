@@ -11,7 +11,6 @@
 <div class="project-content">
   <ArticleSection tag={Category.Running} displayTitle="Run" sortedPosts={sortedPosts}/>
   <ArticleSection tag={Category.Engineering} displayTitle="Engineering Projects" sortedPosts={sortedPosts}/>
-  <ArticleSection tag={Category.Music} displayTitle="Music" sortedPosts={sortedPosts}/>
 </div>
 
 <style>

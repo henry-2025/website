@@ -20,7 +20,7 @@
 </p>
 
 <img
-    src="/projects/reactive-audio-visualizer/audio-reactive-system-design.png"
+    src="/blog/reactive-audio-visualizer/audio-reactive-system-design.png"
     alt="high-level system layout"
 />
 

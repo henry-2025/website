@@ -37,10 +37,10 @@ export const posts: Array<Post> = [
         category: Category.Engineering,
     },
     {
-        title: "Reflecting on 10 Years of Competitive Running",
+        title: "Drinking the Kool-Aid",
         slug: "10-years-running",
-        date: new Date("2024-08-24"),
-        description: "The truncated version of my journey from high-school newbie to washed-up hobby racer, some takeaways, and the big \"where now?\"",
+        date: new Date("2026-01-01"),
+        description: "The truncated version of my 10-years’ journey from high-school newbie to washed-up hobby racer, some takeaways, and where to now",
         category: Category.Running,
     },
 ]

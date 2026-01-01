@@ -23,7 +23,6 @@
       <a href="/about">about</a>
       <a href="/photo">photo</a>
     </nav>
-    <!-- <div class="banner"></div> TODO: figure out banner for site-->
   </header>
 
   <div class="viewing-content">

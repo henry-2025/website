@@ -4,11 +4,14 @@
   let { data, children }: { data: { posts: Array<Post> }; children: any } =
     $props();
 
-    let activePost: Post | undefined = data.posts.filter(post => page.url.pathname.endsWith(post.slug)).at(0);
-    if (activePost === undefined) {
-      throw new Error(`unable to find post metadata for the slug ${page.url.pathname}`)
-    }
-
+  let activePost: Post | undefined = data.posts
+    .filter((post) => page.url.pathname.endsWith(post.slug))
+    .at(0);
+  if (activePost === undefined) {
+    throw new Error(
+      `unable to find post metadata for the slug ${page.url.pathname}`,
+    );
+  }
 </script>
 
 <article>
@@ -63,8 +66,19 @@
     color: rgba(150, 168, 227, 100);
   }
 
-  :global(article > img) {
-    max-width: 100%;
+  :global(figure > img) {
+    width: 100%;
+  }
+
+  :global(article > figure) {
+    float: inline-start;
+    max-width: 50%;
+    margin-inline: 1em;
+    margin-block: 0;
+  }
+  :global(figure>figcaption) {
+    text-align: center;
+    font-size: small;
   }
 
   :global(article > .footnotes) {

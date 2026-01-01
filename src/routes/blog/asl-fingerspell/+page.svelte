@@ -82,7 +82,7 @@
 </p>
 
 <img
-    src="/projects/asl-fingerspell/example_feature_sequence.gif"
+    src="/blog/asl-fingerspell/example_feature_sequence.gif"
     alt="training example"
 />
 
@@ -419,7 +419,7 @@ for chunk in n_sequences // chunk_size:
 </p>
 
 <img
-    src="/projects/asl-fingerspell/causal_conv.png"
+    src="/blog/asl-fingerspell/causal_conv.png"
     alt="Causal 1D Convolution"
 />
 
@@ -454,7 +454,7 @@ class CausalConv(tf.keras.layers.Layer):
 </p>
 
 <img
-    src="/projects/asl-fingerspell/depthwise_conv.png"
+    src="/blog/asl-fingerspell/depthwise_conv.png"
     alt="Depthwise 1D Convolution"
 />
 
@@ -477,7 +477,7 @@ class CausalConv(tf.keras.layers.Layer):
 </p>
 
 <img
-    src="/projects/asl-fingerspell/eca.png"
+    src="/blog/asl-fingerspell/eca.png"
     alt="Efficient channel attention"
 />
 
@@ -538,7 +538,7 @@ class ChannelAttention(tf.keras.layers.Layer):
     high level how CTC loss is evaluated for P('hello' | X).
 </p>
 
-![Connectionist Temporal Classification](/projects/asl-fingerspell/ctc.png)
+![Connectionist Temporal Classification](/blog/asl-fingerspell/ctc.png)
 
 <p>
     Note: there are serious problems that one can encounter with the numerical
