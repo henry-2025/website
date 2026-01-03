@@ -70,6 +70,10 @@
     width: 100%;
   }
 
+  :global(img) {
+    max-width: 100%;
+  }
+
   :global(article > figure) {
     float: inline-start;
     max-width: 50%;
@@ -89,9 +93,9 @@
   }
 
   @media (max-width: 800px) {
-    :global(article) {
-      margin: 1em 0;
-      padding: 2em 3em;
+    article {
+      margin: 0;
+      padding: 0;
       border-radius: 1em;
     }
   }
