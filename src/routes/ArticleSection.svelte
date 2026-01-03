@@ -38,9 +38,10 @@
     width: 100%;
    }
     .project-list {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-wrap: nowrap;
         align-items: center;
+        overflow-x: auto;
     }
 
     .article-summary > h3 {
@@ -82,7 +83,7 @@
     @media (max-width: 800px) {
         .project-list {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
         }
 
@@ -93,7 +94,15 @@
             transition: 0.2s;
             align-content: center;
             margin: 1em;
-            width: fit-content;
+            width: 40vw;
+        }
+
+        .article-summary>h3 {
+            font-size: 1rem;
+        }
+
+        .article-summary>p {
+            font-size: 1rem;
         }
     }
 </style>

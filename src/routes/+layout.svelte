@@ -72,11 +72,13 @@
   }
 
   header {
-    font-weight: 600;
-    background-image:
-      url("/banner-image.jpeg");
+    background-image: url("/banner-image.jpeg");
     background-repeat: no-repeat;
     background-size: 100vw;
+    font-size: 1rem;
+    text-align: left;
+
+    font-weight: 600;
     width: 100%;
     z-index: 2;
     display: flex;
@@ -85,6 +87,27 @@
     align-items: center;
     height: 20em;
     view-transition-name: header;
+  }
+
+  @media screen and (max-width: 800px) {
+    header {
+      background-image: none;
+      height: fit-content;
+      display: fixed;
+    }
+    nav {
+      font-size: 5cqi;
+      justify-content: center; 
+    }
+    .viewing-content>main {
+      width: 80vw;
+    }
+
+    .page-container>footer {
+      flex-direction: column;
+      text-align: center;
+      height: fit-content;
+    }
   }
 
   nav {
@@ -110,6 +133,7 @@
     display: flex;
     flex: 1 0 auto;
     justify-content: center;
+    width: 100vw;
   }
 
   footer {
@@ -135,22 +159,6 @@
 
   .socials > div {
     margin: 1em;
-  }
-
-  .banner {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    font-size: 3em;
-    font-weight: bold;
-    width: fit-content;
-    padding: 0 2em;
-    vertical-align: middle;
-    height: 3em;
-    color: orangered;
-    mix-blend-mode: plus-lighter;
-    text-shadow: #ff3f2d 1px 0 10px;
-    view-transition-name: banner;
   }
 
   a {
